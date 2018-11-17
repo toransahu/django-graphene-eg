@@ -1,0 +1,53 @@
+{
+  allIngredients {
+    id
+    name
+  }
+}
+
+{
+  allCategories {
+    name
+    ingredients {
+      name
+    }
+  }
+}
+
+
+{
+  allIngredients {
+    id
+    name
+    category {
+      id
+      name
+    }
+  }
+}
+
+{
+  category(id:1){
+    name
+  }
+}
+
+{
+  ingredient(id:1){
+    name
+  }
+}
+
+
+{
+  category(id:1){
+    name
+  }
+  #since we are using one field several times in our query, we need aliases
+  anotherCategory: category(name:"Dairy"){
+    ingredients{
+      id
+      name
+    }
+  }
+}
