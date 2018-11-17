@@ -51,3 +51,14 @@
     }
   }
 }
+
+# using relay 
+{
+  allDishes{
+    edges{
+      node{
+        name
+      }
+    }
+  }
+}
