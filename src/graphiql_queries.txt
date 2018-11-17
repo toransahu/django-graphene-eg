@@ -62,3 +62,14 @@
     }
   }
 }
+
+{
+    allIngredients{
+      edges {
+        node{
+          name
+          id
+        }
+      }
+    }
+  }
