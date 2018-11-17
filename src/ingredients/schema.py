@@ -59,5 +59,5 @@ class Query:
     category = relay.Node.Field(CategoryNode)
     all_categories = DjangoFilterConnectionField(CategoryNode)
 
-    ingredient = graphene.Field(IngredientNode)
+    ingredient = relay.Node.Field(IngredientNode)
     all_ingredients = DjangoFilterConnectionField(IngredientNode)
