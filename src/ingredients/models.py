@@ -44,3 +44,12 @@ class Dish(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Post(models.Model):
+    """Post Model Class."""
+
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+    published = models.BooleanField(default=False)
+    owner = models.ForeignKey("auth.User")

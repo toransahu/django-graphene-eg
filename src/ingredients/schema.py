@@ -10,7 +10,7 @@ schema.py
 
 import graphene
 from graphene_django.types import DjangoObjectType
-from .models import Category, Ingredient, Dish
+from .models import Category, Ingredient, Dish, Post
 from graphene import relay
 from graphene_django.filter import DjangoFilterConnectionField
 
@@ -50,6 +50,16 @@ class DishNode(DjangoObjectType):
         interfaces = (relay.Node,)
 
 
+class PostNode(DjangoObjectType):
+    """PostNode Interface."""
+
+    class Meta:
+        model = Post
+        only_fields = ("title", "content")
+        # exclude_fields = ('published', 'owner')
+        interfaces = (relay.Node,)
+
+
 class Query:
     """GraphQL Query Class."""
 
@@ -61,3 +71,11 @@ class Query:
 
     ingredient = relay.Node.Field(IngredientNode)
     all_ingredients = DjangoFilterConnectionField(IngredientNode)
+
+    my_posts = DjangoFilterConnectionField(PostNode)
+
+    def resolve_my_posts(self, info):
+        if not info.content.user.is_authenticated():
+            return Post.objects.none()
+        else:
+            return Post.objects.filter(owner=info.context.user)
