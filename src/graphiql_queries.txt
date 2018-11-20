@@ -73,3 +73,23 @@
       }
     }
   }
+
+  {
+  allIngredients(name_Icontains: "e"){
+    edges{
+      node{
+        name
+      }
+    }
+  }
+}
+
+{
+  allIngredients(name_Icontains: "e" category_Name: "Meat"){
+    edges{
+      node{
+        name
+      }
+    }
+  }
+}
