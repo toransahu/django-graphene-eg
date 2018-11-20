@@ -93,3 +93,20 @@
     }
   }
 }
+
+{
+  myPosts(title_Icontains:"rst"){
+    edges{
+      node{
+        title
+      }
+    }
+  }
+}
+
+# here UG9zdE5vZGU6MQ== is base64 encoding of Post:1
+{
+  post(id:"UG9zdE5vZGU6MQ=="){
+    id title content
+  }
+}
