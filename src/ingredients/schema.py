@@ -55,7 +55,16 @@ class PostNode(DjangoObjectType):
 
     class Meta:
         model = Post
-        only_fields = ("title", "content")
+        filter_fields = {
+            "title": ["exact", "icontains"],
+            "content": ["exact", "icontains"],
+        }
+
+        #
+        # depricated
+        #
+
+        # only_fields = ("title", "content")
         # exclude_fields = ('published', 'owner')
         interfaces = (relay.Node,)
 
