@@ -56,6 +56,7 @@ class PostNode(DjangoObjectType):
     class Meta:
         model = Post
         filter_fields = {
+            "id": ["exact"],
             "title": ["exact", "icontains"],
             "content": ["exact", "icontains"],
         }
@@ -67,6 +68,22 @@ class PostNode(DjangoObjectType):
         # only_fields = ("title", "content")
         # exclude_fields = ('published', 'owner')
         interfaces = (relay.Node,)
+
+    @classmethod
+    def get_node(cls, id, info):
+        """get_node.
+
+        :param id:
+        :param info:
+        """
+        try:
+            post = cls._meta.model.objects.filter(id=id)
+        except cls._meta.model.DoesNotExist:
+            return None
+
+        if post.published or info.context.user == post.owner:
+            return post
+        return None
 
 
 class Query:
@@ -82,9 +99,11 @@ class Query:
     all_ingredients = DjangoFilterConnectionField(IngredientNode)
 
     my_posts = DjangoFilterConnectionField(PostNode)
+    post = relay.Node.Field(PostNode)
+    # post = graphene.Field(PostNode, id=graphene.Int(), title=graphene.String())
 
-    def resolve_my_posts(self, info):
-        if not info.content.user.is_authenticated():
+    def resolve_my_posts(self, info, **kwargs):
+        if not info.context.user.is_authenticated:
             return Post.objects.none()
         else:
-            return Post.objects.filter(owner=info.context.user)
+            return Post.objects.filter(owner=info.context.user, **kwargs)
